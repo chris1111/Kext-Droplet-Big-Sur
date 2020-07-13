@@ -1,7 +1,7 @@
 # Kext-Droplet-Big-Sur
 
 ### Simple Utility for installing kexts in macOS Big Sur 11
-#### Works only on real Mac, Not testing on Unsupported Mac
+#### Works for real Mac and Hackintosh
 
 - Kexts is installed in /Library/Extensions
 - Lattest Update 26 June 2020
