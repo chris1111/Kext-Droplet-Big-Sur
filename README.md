@@ -13,7 +13,7 @@
 ![Capture1](https://i87.servimg.com/u/f87/17/99/48/98/webp_n10.gif)
 
 ### Follow all steps in the Video ⇩
-[![Modular Image Creation](https://user-images.githubusercontent.com/6248794/100675789-9d48a880-3335-11eb-8352-b0ac5f42366d.png)](https://youtu.be/D_8ZkeGXreI)
+[![Modular Image Creation](https://user-images.githubusercontent.com/6248794/100680251-23b5b800-333f-11eb-8234-50195475605b.png)](https://youtu.be/D_8ZkeGXreI)
 
 
 #### Download Release V2 ➤ [Kext-Droplet-V2.dmg.zip](https://github.com/chris1111/Kext-Droplet-Big-Sur/releases/tag/V2)
