@@ -1,0 +1,135 @@
+#!/bin/sh
+# Kext-Droplet
+# Copyright (c) 2019 2020, chris1111. All Right Reserved
+# Permission to use, copy, modify, and/or distribute this software for any
+# purpose with or without fee is hereby granted, provided that the above
+# copyright notice and this permission notice appear in all copies.
+# THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+# WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+# ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+# WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+# ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+# OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+# Vars
+LEDir="/Library/Extensions"
+TempDir="/Private/tmp/Install"
+BULEDir="$HOME/Desktop/BackupKext_LE"
+apptitle="Kext-Droplet"
+version="1.0"
+# Set Icon directory and file 
+iconfile="System/Library/CoreServices/CoreTypes.bundle/Contents/Resources/KEXT.icns"
+echo " "
+
+echo "
+******************************************************
+Kext-Droplet
+******************************************************"
+# Set Droping directory and file
+for files in "$@" ;do
+
+if [ "/Private/tmp/Install" ]; then
+	rm -rf "/Private/tmp/Install"
+fi
+
+mkdir -p "${TempDir}"
+Sleep 1
+
+cp -R "$@" "${TempDir}"
+
+echo "Prepare Installation for:"
+for file in "${TempDir}"/*;
+do
+echo "${file##*/}"
+done
+
+
+Sleep 2
+# Select Choice
+response=$(osascript -e 'tell app "System Events" to display dialog "Kext-Droplet is a utility that allows you
+to install your kexts in all security in Library Extensions.
+
+Only Kext file are allow.
+NOTE: The files are overwritten if they exist, a backup of the original files is performed.
+
+Choose LE to install the kexts!
+L/E ➣ /Library/Extensions/" buttons {"Cancel","LE"} default button 2 with title "'"$apptitle"' '"$version"'" with icon POSIX file "'"$iconfile"'"  ')
+
+action=$(echo $response | cut -d ':' -f2)
+
+  #  Exit if Canceled
+  if [ "$action" == "Cancel" ] ; then
+    osascript -e 'display notification "Program closing" with title "'"$apptitle"'" subtitle "User cancelled"'     
+     exit 0
+  fi
+ 
+
+  #  Library Extensions is user select LE
+  if [ "$action" == "LE" ] ; then
+sleep 2
+echo "Verifying Kexts for /Library/Extensions/:"
+if [ -e "${3}/Library/Extensions/${file##*/}"  ]; then
+echo "Find ${file##*/} ➣ Save Kext for (LE)"
+mkdir -p ~/Desktop/BackupKext_LE
+for file in "${TempDir}"/*; 
+do
+Sleep 3
+rsync -ab "${TempDir}"/${file##*/} "$BULEDir";
+mv "$BULEDir" "${BULEDir}"`date "+%Y%m%d_%H%M%S"`
+done
+fi
+
+osascript -e 'do shell script "/chown -R root:wheel /Private/tmp/Install/*.kext" with administrator privileges'
+osascript -e 'do shell script "chmod -R 755 /Private/tmp/Install/*.kext" with administrator privileges'
+
+
+
+
+
+
+
+echo "Verifying SIP"
+Sleep 2
+function vertifySIP {
+	echo -n "Verifying SIP..."
+	if [[ "$(csrutil status | grep "System Integrity Protection status: disabled." | wc -l)" == "       0" && "$(csrutil status | grep "Filesystem Protections: disabled" | wc -l)" == "       0" ]]; then
+		echo ""
+osascript -e 'tell app "System Events" to display dialog "SIP is enabled on this system. Please boot into Recovery HD or an Installer USB drive, open a new Terminal Window, and enter csrutil disable. When completed, reboot back into your standard macOS install, and run this Program again." with icon file "System:Library:CoreServices:CoreTypes.bundle:Contents:Resources:FileVaultIcon.icns" buttons {"OK"} default button 1 with title "Kext-Droplet (Error SIP Enable)"'
+
+osascript -e 'display notification "Program closing" sound name "default" with title "'"$apptitle"'" subtitle "SIP is Enable"'
+echo "QUITAPP"
+exit 0
+		return 1
+	fi
+	return 0		
+		
+}
+
+vertifySIP
+osascript -e 'do shell script "cp -r /Private/tmp/Install/*.kext /Library/Extensions/" with administrator privileges' 
+echo "Kext Cache repair! Please wait. ."
+Sleep 1
+osascript -e 'do shell script "sudo touch /Library/Extensions/" with administrator privileges'
+osascript -e 'do shell script "sudo kextcache -i /" with administrator privileges'
+osascript -e 'do shell script "sudo kmutil install --update-all" with administrator privileges'
+osascript -e 'do shell script "chmod -R 755 /Library/Extensions/" with administrator privileges'
+osascript -e 'do shell script "/chown -R root:wheel /Library/Extensions/" with administrator privileges'
+
+
+fi
+
+Sleep 2
+osascript -e 'do shell script "rm -rf /Private/tmp/Install" with administrator privileges'
+echo "Verification System version"
+
+echo " "
+osascript -e 'tell app "System Events" to display dialog "You have to allow software update then restart your machine!" with icon file "System:Library:CoreServices:CoreTypes.bundle:Contents:Resources:FinderIcon.icns" buttons {"DONE"} default button 1 with title "Restart the machine"'
+Sleep 1
+# script Notifications
+osascript -e 'display notification "Completed with success" with title "Reboot"  sound name "default"'
+
+exit 0
+  
+
+
+done
