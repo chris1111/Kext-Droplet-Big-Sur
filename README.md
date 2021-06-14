@@ -1,13 +1,14 @@
 # Kext-Droplet-Big-Sur
 
-### Simple Utility for installing kexts in macOS Big Sur 11
+### Simple Utility for installing kexts in macOS Big Sur 11 and macOS Monterey 12
 #### Works for real Mac and Hackintosh
 
 - Kexts is installed in /Library/Extensions
 - Lattest Update 14 Dec 2020 Add create_app.command for build the sources
 
 # Kext-Droplet
-- Support macOS Big Sur 10.16 Only!
+- Support macOS Big Sur 11 
+- Support macOS Monterey 12
 - SIP must be disable
 
 ![Capture1](https://i87.servimg.com/u/f87/17/99/48/98/webp_n10.gif)
