@@ -1,4 +1,4 @@
-## This Repos is no longer up to date ➤ Go to [this Utility for Ventura 13](https://github.com/chris1111/Kext-Droplet-macOS)
+## This Repos is no longer up to date! - Go to ➤ [this Utility for Ventura 13](https://github.com/chris1111/Kext-Droplet-macOS)
 
 # Kext-Droplet-Big-Sur
 
