@@ -1,3 +1,5 @@
+# This Repos is no longer up to date ➤ Go to [this Utility for Ventura 13](https://github.com/chris1111/Kext-Droplet-macOS)
+
 # Kext-Droplet-Big-Sur
 
 ### Simple Utility for installing kexts in macOS Big Sur 11 and macOS Monterey 12
